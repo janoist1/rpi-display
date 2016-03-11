@@ -1,0 +1,31 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          display
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start mini display daemon at boot time
+# Description:       Enable mini display service provided by daemon.
+### END INIT INFO
+
+script=/home/pi/Dev/rpi-display/status.py
+pid=/var/run/rpi-display.pid
+
+case "$1" in
+  start)
+    echo "Starting mini display ..."
+    nohup $script > $pid 2>&1&
+    ;;
+  stop)
+    echo "Stopping mini display ..."
+    kill -9 `cat $pid`
+    ;;
+  *)
+    echo "Usage: /etc/init.d/display {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
